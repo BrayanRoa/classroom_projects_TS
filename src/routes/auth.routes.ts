@@ -1,10 +1,12 @@
 import { Router } from 'express'
-import { registroPersona } from '../controllers/auth.controller'
-import { crearPersona } from '../middlewares/validators/auth.validator'
+import { cargarExcelAlumnos, registroPersona } from '../controllers/auth.controller'
+import { crearPersona, inscribirAlumnosMateria } from '../middlewares/validators/auth.validator'
 
 const router = Router()
 
-// router.post('/registroDocente', datosDocente(), registroDocente)
+//* CON ESTE ENDPOINT REGISTRO PROFESORES Y ALUMNOS
 router.post('/registroPersona', crearPersona,  registroPersona)
+
+router.post('/registroAlumnos/:asignatura/:grupo', inscribirAlumnosMateria, cargarExcelAlumnos)
 
 export default router
