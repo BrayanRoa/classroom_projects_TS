@@ -1,6 +1,11 @@
+import { GrupoResponse, Materia } from "../../interfaces/materia-response.interface";
 import { Model, DataTypes, sequelize } from "../conexion";
 
-class Asignatura extends Model {}
+class Asignatura extends Model implements Materia{
+  declare cod_asignatura: string;
+  declare nombre: string;
+  declare grupos?: GrupoResponse[];
+}
 
 Asignatura.init(
   {

@@ -1,8 +1,11 @@
 import express, { Application } from "express";
 import { sequelize } from "../db/conexion";
-import authRouter from "../routes/auth.routes";
 import fileUpload from "express-fileupload";
+
+//* IMPORTACIONES INTERNAS
+import authRouter from "../routes/auth.routes";
 import "../db/relaciones";
+import materiasRouter from "../routes/materias.routes"
 
 export class Server {
   private app: Application;
@@ -14,6 +17,7 @@ export class Server {
     this.PORT = process.env.PORT || "3000";
     this.rutas = {
       auth: "/api/auth/",
+      materias: '/api/materias/'
     };
 
     this.db();
@@ -42,6 +46,7 @@ export class Server {
 
   routes() {
     this.app.use(this.rutas.auth, authRouter);
+    this.app.use(this.rutas.materias, materiasRouter)
   }
 
   listen() {

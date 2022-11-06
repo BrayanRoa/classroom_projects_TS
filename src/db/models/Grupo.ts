@@ -1,5 +1,5 @@
 import { Model, sequelize, DataTypes } from "../conexion";
-import { GrupoResponse } from '../../interfaces/grupo-response.interface';
+import { GrupoResponse } from '../../interfaces/materia-response.interface';
 
 class Grupo extends Model implements GrupoResponse{
   declare cod_grupo: number;
