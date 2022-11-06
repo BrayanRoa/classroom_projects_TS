@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   crearAsignatura,
+  estudiantesAsignatura,
   obtenerAsignaturas,
 } from "../services/materias.service";
 
@@ -34,6 +35,20 @@ const postMateria = async (req: Request, res: Response) => {
 
 const postGrupo = () => {};
 
-const getAlumnosGrupo = () => {};
+const getAlumnosGrupo = async(req:Request, res:Response) => {
+
+  try {
+    const {count, rows} = await estudiantesAsignatura(req.params.cod_asignatura, req.params.grupo)
+    res.status(200).json({
+      total:count,
+      alumnos:rows
+    })
+  } catch (error) {
+    console.log(error);
+    res.json({
+      error
+    })
+  }
+};
 
 export { getMaterias, postMateria, postGrupo, getAlumnosGrupo };

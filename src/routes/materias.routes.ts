@@ -4,12 +4,15 @@ import { registro } from '../middlewares/validators/asignatura.validator';
 
 const router = Router();
 
-router.get('/', getMaterias);
+//* TODO: COLOCAR QUE EL LISTADO SOLO LO VEAN LOS PROFESORES
+router.get('/',  getMaterias);
 
 router.post('/', registro , postMateria)
 
+//* TODO: AGREGARLO GRUPO A UNA ASIGNATURA
 router.post('/:cod_asignatura', postGrupo)
 
-router.get('/:cod_asignatura', getAlumnosGrupo)
+//* OBTENER LOS ALUMNOS DE UNA ASIGNATURA
+router.get('/:cod_asignatura/:grupo', getAlumnosGrupo)
 
 export default router

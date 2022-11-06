@@ -13,3 +13,8 @@ export const registro = [
         validarCampos(req, res, next);
     }  
 ]
+
+//* TODO: VALIDAR QUE EL QUE VEA EL LISTADO SEA UN PROFESOR
+export const verMaterias = [
+    
+]
