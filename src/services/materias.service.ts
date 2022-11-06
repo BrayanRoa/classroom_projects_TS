@@ -28,13 +28,13 @@ const crearAsignatura = async (materia:InscribirMateria)=>{
           })
     } catch (error) {
         console.log(error);
-        throw new Error(`j`)
+        throw new Error(`Algo salio mal, no se pudo crear la asignatura`)
     }
 }
 
 const estudiantesAsignatura = async (cod_asignatura:string, grupo:string)=>{
     const alumnos = await Persona.findAndCountAll({
-        attributes:['nombres', 'apellidos'],
+        attributes:['nombres', 'apellidos', 'correo_institucional', 'codigo'],
         where:{cod_rol:2},
         include:[{
           model:Grupo,
@@ -55,9 +55,25 @@ const estudiantesAsignatura = async (cod_asignatura:string, grupo:string)=>{
     return alumnos
 }
 
+const crearGrupo = async (
+  correo_institucional:string, 
+  cod_asignatura:string, 
+  nombre_grupo:string,
+  cantidad_alumnos:number)=>{
+
+  try {
+    await sequelize.query('CALL Add_Grupo_Materia(?,?,?,?)',{
+      replacements:[correo_institucional, cod_asignatura, nombre_grupo, cantidad_alumnos]
+    })
+  } catch (error) {
+    throw new Error(`Algo salio mal, no se pudo crear el grupo`)
+  }
+}
+
 
 export {
     obtenerAsignaturas,
     crearAsignatura,
-    estudiantesAsignatura
+    estudiantesAsignatura,
+    crearGrupo
 }

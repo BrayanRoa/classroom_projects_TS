@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   crearAsignatura,
+  crearGrupo,
   estudiantesAsignatura,
   obtenerAsignaturas,
 } from "../services/materias.service";
@@ -33,7 +34,28 @@ const postMateria = async (req: Request, res: Response) => {
   }
 };
 
-const postGrupo = () => {};
+const postGrupo = async (req:Request, res:Response) => {
+
+  const {nombre_grupo, cantidad_alumnos, correo_institucional } = req.body;
+  const {cod_asignatura} = req.params;
+  
+  try {
+    await crearGrupo(
+      correo_institucional, 
+      cod_asignatura, 
+      nombre_grupo, 
+      cantidad_alumnos)
+
+    res.json({
+      msg:`Grupo ${nombre_grupo} agregado con exito a la materia ${cod_asignatura}`
+    })
+  } catch (error) {
+    console.log(error);
+    res.json({
+      error
+    })
+  }
+};
 
 const getAlumnosGrupo = async(req:Request, res:Response) => {
 

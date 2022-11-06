@@ -3,21 +3,29 @@ import {
   authPersona,
   // authDocente,
   excelEstudiantes,
+  loginPersona,
 } from "../services/auth.service";
 
-// const registroDocente = async (req: Request, res: Response) => {
-//   try {
-//     const docente = await authDocente(req.body);
-//     res.status(201).json({
-//       docente,
-//     });
-//   } catch (error) {
-//     res.status(400).json({
-//       error: `No se pudo registrar el docente ${error}`,
-//     });
-//     console.log(error);
-//   }
-// };
+const login = async (req: Request, res: Response) => {
+  const { correo_institucional } = req.body;
+  try {
+    const [persona, token] = await loginPersona(correo_institucional);
+    if (!persona) {
+      return res.status(400).json({
+        msg: `No existe persona con correo ${correo_institucional}`,
+      });
+    }
+    res.status(200).json({
+      persona,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      error,
+    });
+  }
+};
 
 const registroPersona = async (req: Request, res: Response) => {
   let respuesta = {};
@@ -39,9 +47,9 @@ const registroPersona = async (req: Request, res: Response) => {
 const cargarExcelAlumnos = async (req: Request, res: Response) => {
   try {
     const { asignatura, grupo } = req.params;
-    await excelEstudiantes(req.files, asignatura, grupo);
+    const resp = await excelEstudiantes(req.files, asignatura, grupo);
     res.status(201).json({
-      Alumnos: `Alumnos inscritos con exito`,
+      resp,
     });
   } catch (error) {
     console.log(error);
@@ -51,8 +59,4 @@ const cargarExcelAlumnos = async (req: Request, res: Response) => {
   }
 };
 
-export { 
-  // registroDocente, 
-  registroPersona, 
-  cargarExcelAlumnos
-};
+export { login, registroPersona, cargarExcelAlumnos };

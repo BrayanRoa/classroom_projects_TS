@@ -6,12 +6,14 @@ import fileUpload from "express-fileupload";
 import authRouter from "../routes/auth.routes";
 import "../db/relaciones";
 import materiasRouter from "../routes/materias.routes"
+import "../helpers/expandir-express"
 
 export class Server {
   private app: Application;
   private PORT: string;
   private rutas;
 
+  
   constructor() {
     this.app = express();
     this.PORT = process.env.PORT || "3000";
@@ -54,4 +56,5 @@ export class Server {
       console.log(`Server running on port ${this.PORT}`);
     });
   }
+
 }

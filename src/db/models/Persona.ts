@@ -8,7 +8,7 @@ class Persona extends Model implements PersonaResponse{
   declare nombres: string;
   declare apellidos: string;
   declare cod_tipo_doc: number | null;
-  declare cod_rol: number | null;
+  declare cod_rol: number;
   declare codigo: string;
   declare correo_personal: string | null;
   declare documento: string | null;

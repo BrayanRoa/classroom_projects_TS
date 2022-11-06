@@ -7,6 +7,13 @@ import path from "path";
 import readXlsxFile from "read-excel-file/node";
 import { validarArchivo } from "../helpers/subir-archivo";
 import fs from "fs";
+import { generarJWT } from "../helpers/generar-jwt";
+
+const loginPersona = async (correo_institucional:string, ) => {
+  let persona = await Persona.findByPk(correo_institucional);
+  const token = await generarJWT(correo_institucional, persona?.cod_rol);
+  return [persona, token]
+};
 
 const authDocente = async (docente: PersonaResponse): Promise<Persona> => {
   docente.nombres = docente.nombres.toLowerCase();
@@ -28,7 +35,6 @@ const authPersona = async (
     persona.correo_institucional,
     asignatura
   );
-  console.log(materia);
   let msg = `El alumno ya se encuentra registrado en la materia ${asignatura} grupo: ${materia}`;
 
   if (!data) {
@@ -46,21 +52,20 @@ const authPersona = async (
 
 const arrayVacio = (arr: any) => !Array.isArray(arr) || arr.length === 0;
 
-//* TODO: ESTOY PASANDO UN FALSO POSITIVO EN EL CASO DE QUE EL ESTUDIANTE YA EXISTA EN LA MATERIA
 const excelEstudiantes = async (
   file: any,
   cod_asignatura: string,
   grupo: string
-) => {
-  
+): Promise<string[]> => {
+  let logs: string[] = [];
   const nombreArchivo = await validarArchivo(file);
   const pathArchivo = path.join(__dirname, "../uploads/", nombreArchivo);
 
-  readXlsxFile(pathArchivo)
+  await readXlsxFile(pathArchivo)
     .then(async (rows) => {
       rows.shift();
 
-      rows.forEach(async (alumno) => {
+      for (const alumno of rows) {
         const datos = {
           correo_institucional: alumno[0].toString(),
           asignatura: cod_asignatura,
@@ -76,7 +81,7 @@ const excelEstudiantes = async (
           nombres: alumno[1].toString(),
           apellidos: alumno[2].toString(),
           codigo: alumno[3].toString(),
-          cod_rol:2
+          cod_rol: 2,
         };
 
         if (!data) {
@@ -92,7 +97,10 @@ const excelEstudiantes = async (
             ],
           });
         }
-      });
+        logs.push(
+          `El alumno ${estudiante.nombres} ${estudiante.apellidos} ya estaba registrado en la asignatura`
+        );
+      }
 
       //* PREGUNTAMOS SI ESTE EXCEL EXISTE EN NUESTRO SERVIDOR Y LO BORRAMOS
       if (fs.existsSync(pathArchivo)) {
@@ -100,8 +108,12 @@ const excelEstudiantes = async (
       }
     })
     .catch((error) => {
-      throw new Error(`No se pudo registrar los alumnos en la materia ${error}`);
+      throw new Error(
+        `No se pudo registrar los alumnos en la materia ${error}`
+      );
     });
-  };
 
-export { authDocente, authPersona, excelEstudiantes };
+  return logs;
+};
+
+export { authDocente, authPersona, excelEstudiantes, loginPersona };
