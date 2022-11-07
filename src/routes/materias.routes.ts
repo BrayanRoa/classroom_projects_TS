@@ -5,6 +5,7 @@ import {
   postGrupo,
   postMateria,
 } from "../controllers/materias.controller";
+import { validarRolDocente } from "../middlewares/validar-campos";
 import { validarJWT } from "../middlewares/validar-jwt";
 import {
   registro,
@@ -13,16 +14,25 @@ import {
 
 const router = Router();
 
-//* TODO: COLOCAR QUE EL LISTADO SOLO LO VEAN LOS PROFESORES
-router.get("/", getMaterias);
+//* ✅ TODAS LAS MATERIAS
+router.get("/", [validarJWT, validarRolDocente], getMaterias);
 
-//* REGISTRO DE UNA MATERIA CON SU GRUPO
-router.post("/", registro, postMateria);
+//* ✅ REGISTRO DE UNA MATERIA CON SU GRUPO 
+router.post("/", [validarJWT, validarRolDocente], registro, postMateria);
 
-//* AGREGARLE GRUPO A UNA ASIGNATURA - TODO: OJO CREO QUE ESTA FUNCIONANDO BIEEN PERO HACER PRUEBAS CON EL ENVIO DEL JWT
-router.post("/:cod_asignatura", registroGrupo, validarJWT, postGrupo);
+//* ✅ AGREGARLE GRUPO A UNA ASIGNATURA 
+router.post(
+  "/:cod_asignatura",
+  [validarJWT, validarRolDocente],
+  registroGrupo,
+  postGrupo
+);
 
-//* OBTENER LOS ALUMNOS DE UNA ASIGNATURA - YA TENGO UN MIDDELWARE SOLO FALTA COLOCAR LO DE JWT
-router.get("/:cod_asignatura/:grupo", getAlumnosGrupo);
+//* ✅ OBTENER LOS ALUMNOS DE UNA ASIGNATURA
+router.get(
+  "/:cod_asignatura/:grupo",
+  [validarJWT, validarRolDocente],
+  getAlumnosGrupo
+);
 
 export default router;

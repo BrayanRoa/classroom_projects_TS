@@ -15,14 +15,14 @@ const obtenerAsignaturas = async():Promise<Asignatura[]>=>{
     return materias
 }
 
-const crearAsignatura = async (materia:InscribirMateria)=>{
+const crearAsignatura = async (materia:InscribirMateria, correo_ins:string)=>{
     console.log(materia.nombre);
     try {
         await sequelize.query('CALL Add_Materia_Grupo_Docente(?,?,?,?,?)',{
             replacements:[
               materia.nombre, 
               materia.cantidad_alumnos, 
-              materia.correo_institucional, 
+              correo_ins,
               materia.cod_asignatura, 
               materia.nombreGrupo]
           })

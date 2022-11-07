@@ -22,7 +22,7 @@ const getMaterias = async (_req: Request, res: Response) => {
 
 const postMateria = async (req: Request, res: Response) => {
   try {
-    await crearAsignatura(req.body);
+    await crearAsignatura(req.body, req.uid);
     res.status(201).json({
       msg:`Asignatura ${req.body.cod_asignatura} creada con exito!!!`,
     });
@@ -36,12 +36,12 @@ const postMateria = async (req: Request, res: Response) => {
 
 const postGrupo = async (req:Request, res:Response) => {
 
-  const {nombre_grupo, cantidad_alumnos, correo_institucional } = req.body;
+  const {nombre_grupo, cantidad_alumnos } = req.body;
   const {cod_asignatura} = req.params;
   
   try {
     await crearGrupo(
-      correo_institucional, 
+      req.uid, 
       cod_asignatura, 
       nombre_grupo, 
       cantidad_alumnos)

@@ -1,18 +1,14 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { check, param } from "express-validator";
 import {
   existeAsignatura,
-  existeCorreoInstitucional,
   existeGrupo,
-  puedoAgregarGrupoMateria
+  puedoAgregarGrupoMateria,
 } from "../../helpers/db-validators";
 import { validarCampos } from "../validar-campos";
 
 //* TODO: FALTA VALIDAR QUE SEA UN PROFESOR
 export const registro = [
-  check("correo_institucional").custom((correo) =>
-    existeCorreoInstitucional(correo, "materia")
-  ),
   check("cod_asignatura").custom((cod) => existeAsignatura(cod, "materia")),
   check("nombreGrupo").custom((nomGrupo) => existeGrupo(nomGrupo, "materia")),
   (req: Request, res: Response, next: any) => {
@@ -22,18 +18,11 @@ export const registro = [
 
 //* TODO: VALIDAR QUE SEA DOCENTE QUIEN CREA EL GRUPO
 export const registroGrupo = [
-  // validarJWT,
-  check("correo_institucional").custom((correo_institucional) =>
-    existeCorreoInstitucional(correo_institucional, 'materia')
-  ),
   param("cod_asignatura").custom((asignatura) =>
     puedoAgregarGrupoMateria(asignatura)
   ),
   check("nombre_grupo").custom((grupo) => existeGrupo(grupo, "grupo")),
-  (req: Request, res: Response, next: any) => {
+  (req: Request, res: Response, next: NextFunction) => {
     validarCampos(req, res, next);
   },
 ];
-
-//* TODO: VALIDAR QUE EL QUE VEA EL LISTADO SEA UN PROFESOR
-export const verMaterias = [];
