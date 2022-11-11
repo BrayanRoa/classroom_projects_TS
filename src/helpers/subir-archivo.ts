@@ -2,12 +2,12 @@ const path = require('path')
 const { v4: uuidv4} = require('uuid')
 uuidv4();
 
-export const validarArchivo =(file:any, extValidas = ['csv', 'xlsx']):Promise<string>=>{
+export const validarArchivo =(file:any, extValidas = ['csv', 'xlsx', 'png', 'jpg', 'jpeg']):Promise<string>=>{
 
     return new Promise((resolve, reject)=>{
-        const { alumnos } = file;
+        const { archivo } = file;
 
-        const nombreCortado = alumnos.name.split('.');
+        const nombreCortado = archivo.name.split('.');
     
         const extension = nombreCortado[nombreCortado.length-1];
     
@@ -19,7 +19,7 @@ export const validarArchivo =(file:any, extValidas = ['csv', 'xlsx']):Promise<st
 
         const uploadPath = path.join(__dirname, '../uploads/', nombreTemp);
 
-        alumnos.mv(uploadPath, (err:any)=>{
+        archivo.mv(uploadPath, (err:any)=>{
             if(err){
                 reject(err)
             }

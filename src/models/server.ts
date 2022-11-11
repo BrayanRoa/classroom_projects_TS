@@ -1,12 +1,14 @@
 import express, { Application } from "express";
 import { sequelize } from "../db/conexion";
 import fileUpload from "express-fileupload";
+import cors from 'cors'
 
 //* IMPORTACIONES INTERNAS
 import authRouter from "../routes/auth.routes";
 import "../db/relaciones";
 import materiasRouter from "../routes/materias.routes"
 import "../helpers/expandir-express"
+import personasRouter from "../routes/persona.routes";
 
 export class Server {
   private app: Application;
@@ -19,7 +21,8 @@ export class Server {
     this.PORT = process.env.PORT || "3000";
     this.rutas = {
       auth: "/api/auth/",
-      materias: '/api/materias/'
+      materias: '/api/materias/',
+      personas: '/api/personas/'
     };
 
     this.db();
@@ -38,6 +41,7 @@ export class Server {
 
   middlewares() {
     this.app.use(express.json());
+    this.app.use(cors())
     this.app.use(
       fileUpload({
         useTempFiles: true,
@@ -49,6 +53,7 @@ export class Server {
   routes() {
     this.app.use(this.rutas.auth, authRouter);
     this.app.use(this.rutas.materias, materiasRouter)
+    this.app.use(this.rutas.personas, personasRouter)
   }
 
   listen() {

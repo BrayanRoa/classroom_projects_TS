@@ -11,6 +11,6 @@ export interface PersonaResponse {
     documento?:            null | string;
     celular?:              null | string;
     semestres?:            number | null;
-    img?:                  null;
+    img?:                  string | null;
     perfil_completado:     boolean;
 }

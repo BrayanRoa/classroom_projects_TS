@@ -14,7 +14,7 @@ class Persona extends Model implements PersonaResponse{
   declare documento: string | null;
   declare celular: string | null;
   declare semestres: number | null;
-  declare img: null;
+  declare img: string;
   declare perfil_completado: boolean;
 }
 

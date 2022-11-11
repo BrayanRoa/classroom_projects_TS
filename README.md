@@ -13,3 +13,8 @@ npm i
 ```
 
 3. Ir al archivo .env.example y hacer una copia de los campos que se encuentran alli, crear un archivo .env y pegar los campos ahi y completarlos para poder levantar el servidor con la base de datos
+
+4. Levantar el servidor en modo de desarrollo 
+```
+npm run start:dev
+```
