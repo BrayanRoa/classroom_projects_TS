@@ -1,20 +1,45 @@
-<p align="center">
-  <a href="https://ingsistemas.cloud.ufps.edu.co/" target="blank"><img src="https://ww2.ufps.edu.co/public/archivos/elementos_corporativos/logo-horizontal.jpg" width="400" alt="UFPS Logo" /></a>
-</p>
+<div>
+    <p align="center">
+        <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--egmJbu5X--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/trp0zksm3rffm69rp35z.png" width="400" alt="UFPS Logo" />
+    </p>
+</div>
 
 
-# Ejecutar en desarrollo
+1. Clone the repository
 
-1. Clonar el repositorio
+2. run the following command to install the necessary dependencies 🏗️
 
-2. Ejecutar
-```
-npm i
-```
+```npm install```
 
-3. Ir al archivo .env.example y hacer una copia de los campos que se encuentran alli, crear un archivo .env y pegar los campos ahi y completarlos para poder levantar el servidor con la base de datos
+3. some of the libraries we will use 🧰
 
-4. Levantar el servidor en modo de desarrollo 
-```
-npm run start:dev
-```
+* Class-validator
+* Class-transformer
+* Cors
+* Dotenv
+* Express
+* Morgan
+* PostgreSQl
+* TypeOrm
+* Typescript 
+* Docker
+
+4. copy the variables that are in the ```.env.example``` file and create a new file with the name ```.env``` and paste the variables there, then fill them with the corresponding values
+
+5. Run the following comand: 🐟
+
+```docker compose up```
+
+6. To run in development we must run the following script: 
+
+```npm run start:dev```
+
+7. Used technology
+
+* Node js
+* TypeOrm
+* Postgres
+* Docker
+* Git 
+* SendGrid
+* Swagger
