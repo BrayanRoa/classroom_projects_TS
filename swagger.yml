@@ -1,0 +1,611 @@
+components:
+  schemas:
+    RoleAndDocumentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data: 
+          type: object
+          properties:
+            id:
+              type: string
+            created_at:
+              type: date
+            updated_at:
+              type: date
+            name:
+              type: string
+            state:
+              type: boolean
+
+    personResponse:
+      type: object
+      properties: 
+        status:
+          type: string
+        message:
+          type: string
+        data: 
+          type: object
+          properties:
+            id:
+              type: string
+            names:
+              type: string
+            lastnames:
+              type: string
+            code: 
+              type: string
+            institutional_mail:
+              type: string
+            img:
+              type: string
+            document_type:
+              type: object
+              properties:
+                name: 
+                  type: string
+            role:
+              type: object
+              properties:
+                name: 
+                  type: string
+    
+    subjectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        created_at: 
+          type: date
+        updated_at:
+          type: date
+        name:
+          type: string
+        code:
+          type: string
+
+    
+    updatePerson:
+      type: object
+      properties:
+        names:
+          type: string
+        lastnames:
+          type: string
+        institutional_mail:
+          type: string
+        code:
+          type: string
+
+    updateDocumentAndRole:
+      type: object
+      properties:
+        name:
+          type: string
+    
+    updateSubject:
+      type: object
+      properties:
+        name: 
+          type: string
+        code:
+          type: string
+
+
+    baseResponse:
+      type: object
+      properties: 
+        status:
+          type: string
+        message:
+          type: string
+        data: 
+          type: string
+
+
+#! ---------------- ROLES ------------------- !#
+#* **************** GET ALL ROLES********************* #
+paths:
+  /roles:
+    get:
+      tags: 
+        - Role
+      summary: "Get all roles"
+      
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+
+#* **************** GET ONE ROLE ********************* #
+  /role/{id}:
+    get:
+      tags: 
+        - Role
+      summary: "get one role with id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "identifier role"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+
+#* **************** GET ONE ROLE WITH PERSONN ********************* #
+  /roleWithPersons/{id}:
+    get:
+      tags: 
+        - Role
+      summary: "get one role with their persons"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "identifier role"
+          
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data: 
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      person: 
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          lastnames:
+                            type: string
+                          code: 
+                            type: string
+                          institutional_mail:
+                            type: string
+
+#* **************** CREATE ROLE ********************* #
+  /role/create:
+    post:
+      tags: 
+        - Role
+      summary: "create a new role"
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties: 
+                name:
+                  type: string
+
+      responses:
+        201:
+          description: "Created"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+          
+#* **************** DELETE ROLE ********************* #
+  /role/delete/{id}:
+    delete:
+      tags: 
+        - Role
+      summary: "delete one role by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        204:
+          description: "deleted successfully"
+
+#* **************** UPDATE ROLE ********************* #
+  /role/update/{id}:
+    patch:
+      tags: 
+        - Role
+      summary: "update role with id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/updateDocumentAndRole"
+
+      responses:
+        200:
+          description: "update successfully"
+
+
+
+#! ---------------- DOCUMENT ------------------- !#
+#* **************** GET ALL DOCUMENTS ********************* #
+  /documents:
+    get:
+      tags: 
+        - Document Type
+      summary: "Get all documents"
+      
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+
+#* **************** GET ONE DOCUMENT ********************* #
+  /document/{id}:
+    get:
+      tags: 
+        - Document Type
+      summary: "get one document with id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "identifier document"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+
+#* **************** GET ONE DOCUMENT WITH PERSON ********************* #
+  /documentWithPersons/{id}:
+    get:
+      tags: 
+        - Document Type
+      summary: "get one document with their persons"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "identifier document"
+          
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data: 
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      person: 
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          lastnames:
+                            type: string
+                          code: 
+                            type: string
+                          institutional_mail:
+                            type: string
+
+#* **************** CREATE DOCUMENT ********************* #
+  /document/create:
+    post:
+      tags: 
+        - Document Type
+      summary: "create a new document type"
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties: 
+                name:
+                  type: string
+
+      responses:
+        201:
+          description: "Created"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/RoleAndDocumentResponse"
+          
+#* **************** DELETE DOCUMENT ********************* #
+  /document/delete/{id}:
+    delete:
+      tags: 
+        - Document Type
+      summary: "delete one document by id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        204:
+          description: "deleted successfully"
+
+#* **************** UPDATE DOCUMENT ********************* #
+  /document/update/{id}:
+    patch:
+      tags: 
+        - Document Type
+      summary: "update document with id"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/updateDocumentAndRole"
+      responses:
+        200:
+          description: "update successfully"
+
+
+#! ---------------- PERSON ------------------- !#
+#* **************** GET ALL ********************* #
+
+  /persons:
+    get:
+      tags: 
+        - Person
+      summary: "Get all persons"
+
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/personResponse"
+
+
+#* **************** GET ONE PERSON BY EMAIL OR CODE ********************* #
+
+  /person/{term}:
+    get:
+      tags:
+        - Person
+      summary: "Get one person by email or code"
+
+      parameters:
+        - name: "term"
+          in: "path"
+          required: true
+          type: "string"
+          description: "identifier person - (email or code)"
+
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/personResponse"
+
+  
+#* **************** CREATE PERSON ********************* #
+
+  /person/create:
+    post:
+      tags: 
+        - Person
+      summary: "create a new person"
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties: 
+                names:
+                  type: string
+                lastnames: 
+                  type: string
+                institutional_mail: 
+                  type: string
+                code:
+                  type: string
+                role_id:
+                  type: string
+                document_id:  
+                  type: string
+
+      responses:
+        201:
+          description: "Created"
+          content: 
+            application/json: 
+              schema: 
+                $ref: "#/components/schemas/baseResponse"
+
+                
+
+#* **************** UPDATE PERSON ********************* #
+  /person/update/{id}:
+    patch:
+      tags: 
+        - Person
+      summary: "update person"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+        description: update info of person
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/updatePerson"
+
+        
+      responses:
+        200:
+          description: "update successfully"
+
+
+#! --------------------- SUBJECT ------------------------- !#
+#* **************** GET ALL SUBJECTS ********************* #
+
+  /subjects:
+    get:
+      tags: 
+        - Subject
+      summary: "Get all subjects"
+
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json: 
+              schema:
+                $ref: "#/components/schemas/subjectResponse"
+
+#* *************** GET ONE SUBJECT WITH GROUPS ***************** #
+
+  /subject/{code}:
+    get:
+      tags:
+        - Subject
+      summary: "Get one subject"
+
+      parameters:
+        - name: "code"
+          in: "path"
+          required: true
+          type: "string"
+          description: "identifier subject"
+
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  created_at: 
+                    type: date
+                  updated_at:
+                    type: date
+                  name:
+                    type: string
+                  code:
+                    type: string
+                  group:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+
+
+#* *************** CREATE SUBJECT ***************** #
+
+  /subject/create:
+      post:
+        tags: 
+          - Subject
+        summary: "create a new subject"
+              
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  name:
+                    type: string
+                  code: 
+                    type: string
+                  
+        responses:
+          201:
+            description: "Created"
+            content: 
+              application/json: 
+                schema:
+                  $ref: "#/components/schemas/baseResponse"
+
+
+#* *************** UPDATE SUBJECT ***************** #
+
+  /subject/update/{id}:
+    patch:
+      tags: 
+        - Subject
+      summary: "update subject"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+        description: update info of subject
+        content:
+          application/json:
+            schema: 
+              $ref: "#/components/schemas/updateSubject"
+
+        
+      responses:
+        200:
+          description: "update successfully"
