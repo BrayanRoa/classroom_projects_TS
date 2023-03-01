@@ -22,13 +22,25 @@ export class SubjectController {
         }
     }
 
-    async findOneBy(req: Request, res: Response) {
+    async findOneById(req: Request, res: Response) {
         try {
-            const { code } = req.params
-            const subject = await this.subjectService.findOneBy(code);
+            const { id } = req.params
+            const subject = await this.subjectService.findOneById(id);
             (!subject)
-                ? this.httpResponse.NotFound(res, `subject with id ${code} not found`)
+                ? this.httpResponse.NotFound(res, `subject not found`)
                 : this.httpResponse.Ok(res, subject);
+        } catch (error) {
+            this.httpResponse.Error(res, error);
+        }
+    }
+
+    async findOneWithteachers(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const subject_groups = await this.subjectService.findOneWithteachers(id);
+            (!subject_groups)
+                ? this.httpResponse.NotFound(res, `matter without groups`)
+                : this.httpResponse.Ok(res, subject_groups);
         } catch (error) {
             this.httpResponse.Error(res, error);
         }

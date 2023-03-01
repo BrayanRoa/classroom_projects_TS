@@ -21,19 +21,24 @@ export class SubjectService extends BaseService<SubjectEntity>{
         }
     }
 
-    async findOneBy(code: string) {
+    async findOneById(id:string): Promise<SubjectEntity | null> {
+        try {
+            return (await this.execRepository).findOneBy({id})
+        } catch (error:any) {
+            throw new Error(error)
+        }
+    }
+
+    //* 👀 AQUI VEO SOLO LOS GRUPOS QUE TIENEN DOCENTES ASIGNADOS
+    async findOneWithteachers(id: string) {
         try {
             return (await this.execRepository)
                 .createQueryBuilder("subject")
-                .leftJoin("subject.group", "group")
-                .where("subject.code = :code", { code })
-                .select([
-                    "subject.code",
-                    "subject.name",
-                    "subject.id",
-                    "group.name",
-                    "group.id"
-                ])
+                .innerJoinAndSelect("subject.group", "group")
+                .innerJoinAndSelect("group.persons", "persons")
+                .innerJoinAndSelect("persons.person", "person")
+                .innerJoinAndSelect("person.role", "role")
+                .where("subject.id = :id AND role.name = :rol", { id, rol:"docente" })
                 .getOne()
         } catch (error: any) {
             throw new Error(error)

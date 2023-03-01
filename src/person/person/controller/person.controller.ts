@@ -83,7 +83,7 @@ export class PersonController {
         try {
             const { id } = req.params
             const persons = await this.personService.getAllPersonOfGroup(id);
-            (!persons)
+            (persons?.length === 0)
                 ? this.httpResponse.NotFound(res, `There are no people registered in this group yet`)
                 : this.httpResponse.Ok(res, persons);
         } catch (error) {
