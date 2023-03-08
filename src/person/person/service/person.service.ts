@@ -145,7 +145,13 @@ export class PersonService extends BaseService<PersonEntity>{
                 .leftJoin("groups.group", "group")
                 .leftJoin("group.subject", "subject")
                 .where("person.institutional_mail = :institutional_mail", { institutional_mail })
-                .select(["person.names","groups.state", "group.name", "subject.name", "subject.code"])
+                .select([
+                    "person.names",
+                    "person.id",
+                    "groups.state", 
+                    "group", 
+                    "subject.name", 
+                    "subject.code"])
                 .getOne()
         } catch (error: any) {
             throw error.message

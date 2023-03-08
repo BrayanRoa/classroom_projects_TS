@@ -20,4 +20,10 @@ export class GroupPersonEntity extends BaseEntity{
         length:30
     })
     state!:string
+
+    @Column({
+        type:"boolean",
+        default: true
+    })
+    active!:boolean
 }

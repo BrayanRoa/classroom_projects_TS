@@ -20,7 +20,7 @@ export class TokenService {
         return this.jwtInstance.sign(payload, secret);
     }
 
-    public async generateJwt(mail: string): Promise<{ accessToken: string }> {
+    public async generateJwt(mail: string): Promise<{ accessToken: string, email:string, role:string }> {
         const consultPerson = await this.personService.findOneBy(
             mail
         );
@@ -31,7 +31,9 @@ export class TokenService {
         };
 
         return {
-            accessToken: this.sign(payload, process.env.SECRET_JWT)
+            accessToken: this.sign(payload, process.env.SECRET_JWT),
+            email: consultPerson!.institutional_mail,
+            role: consultPerson!.role.name
         };
     }
 
