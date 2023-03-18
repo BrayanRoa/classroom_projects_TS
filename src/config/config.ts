@@ -1,6 +1,16 @@
 import * as dotenv from "dotenv"
 import { DataSource, DataSourceOptions } from "typeorm"
 import swaggerJSDoc from 'swagger-jsdoc';
+import { PersonEntity } from '../person/person/entity/person.entity';
+import { DocumentTypeEntity } from '../person/document_type/entity/document_type.entity';
+import { RoleEntity } from '../person/role/entity/role.entity';
+import { SubjectEntity } from '../subject/subject/entity/subject.entity';
+import { AdvanceEntity } from '../subject/advance/entity/advance.entity';
+import { GroupEntity } from '../subject/group/entity/group.entity';
+import { GroupPersonEntity } from '../subject/group_person/entity/group_person.entity';
+import { ProjectEntity } from '../subject/project/entity/project.entity';
+import { ProjectPersonEntity } from '../subject/project_person/entity/project_person.entity';
+import { TaskEntity } from '../subject/task/entity/task.entity';
 
 
 export abstract class ConfigServer {
@@ -41,7 +51,18 @@ export abstract class ConfigServer {
             username: this.getEnvironment("DB_USER"),
             password: this.getEnvironment("DB_PASSWORD"),
             database: this.getEnvironment("DB_NAME"),
-            entities: [__dirname + "/../**/*.entity{.ts,.js}"],
+            entities: [
+                PersonEntity, 
+                DocumentTypeEntity, 
+                RoleEntity, 
+                SubjectEntity, 
+                AdvanceEntity, 
+                GroupEntity, 
+                GroupPersonEntity, 
+                ProjectEntity, 
+                ProjectPersonEntity, 
+                TaskEntity],
+            // entities: [__dirname + "/../**/*.entity{.ts,.js}"],
             synchronize: true,
         }
     }
