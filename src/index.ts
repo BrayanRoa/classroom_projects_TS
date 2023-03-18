@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import cors from "cors"
 import morgan from "morgan"
+import "reflect-metadata"
 import swaggerUi from 'swagger-ui-express';
 import { ConfigServer } from "./config/config"
 import { RoleRouter } from './person/role/role.router';
