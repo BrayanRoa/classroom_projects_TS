@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validate as uuidValid } from "uuid"
+import { Files } from "../interface/upload-file.interface";
 import { HttpResponse } from '../response/http-response';
 import { TokenService } from '../service/token.service';
 
@@ -42,5 +43,21 @@ export class SharedMiddleware {
         } catch (error: any) {
             this.httpResponse.Unauthorized(res, error)
         }
+    }
+
+    existFile(req:Request, res:Response, next:NextFunction){
+        const validExtensions = ['png','jpeg','jpg']
+        
+        if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
+            return this.httpResponse.BadRequest(res, `There are no files in the request`)
+        }
+    
+        const {mimetype} = (req.files?.archivo) as unknown as Files
+        const extension = mimetype.split('/')
+    
+        if(!validExtensions.includes(extension[1])){
+            return this.httpResponse.BadRequest(res, `Invalid file extension - allowed ${validExtensions}`)
+        }
+        next()
     }
 }
