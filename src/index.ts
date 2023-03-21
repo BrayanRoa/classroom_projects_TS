@@ -3,6 +3,7 @@ import cors from "cors"
 import morgan from "morgan"
 import "reflect-metadata"
 import swaggerUi from 'swagger-ui-express';
+import fileUpload from "express-fileupload";
 import { ConfigServer } from "./config/config"
 import { RoleRouter } from './person/role/role.router';
 import { DocumentTypeRouter } from './person/document_type/document_type.router';
@@ -13,7 +14,7 @@ import { GroupPersonRouter } from './subject/group_person/group_person.router';
 import { TaskRouter } from './subject/task/task.router';
 import { ProjectRouter } from './subject/project/project.router';
 import { AuthRouter } from './auth/auth.service';
-
+import { v2 as cloudinary } from 'cloudinary'
 
 class Server extends ConfigServer {
     private readonly app: Application
@@ -33,8 +34,19 @@ class Server extends ConfigServer {
     middlewares() {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
-        this.app.use(cors())
+        this.app.use(cors());
         this.app.use(morgan("dev"))
+        this.app.use(
+            fileUpload({
+                useTempFiles: true,
+                tempFileDir: "/tmp/",
+            })
+        );
+        cloudinary.config({
+            cloud_name: this.getEnvironment("CLOUD_NAME"),
+            api_key: this.getEnvironment("API_KEY"),
+            api_secret: this.getEnvironment("API_SECRET")
+        })
     }
 
     routers(): express.Router[] {
