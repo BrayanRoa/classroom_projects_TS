@@ -60,5 +60,11 @@ export class PersonRouter extends BaseRouter<PersonController, PersonMiddleware>
         this.router.get('/person/subjects/:mail',
             (req, res) => this.controller.mySubjects(req, res)
         )
+
+        this.router.post(
+            '/person/image/:id',
+            (req, res, next) => this.middleware.existFile(req, res, next),
+            (req, res) => this.controller.uploadImg(req, res)
+        )
     }
 }

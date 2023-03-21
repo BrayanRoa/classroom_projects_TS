@@ -72,7 +72,7 @@ export class PersonController {
             const { role } = req.params
             const teachers = await this.personService.getPeopleByRole(role);
             (teachers?.length === 0)
-                ? this.httpResponse.NotFound(res, `no registered teachers yet`)
+                ? this.httpResponse.NotFound(res, `no registered persons yet`)
                 : this.httpResponse.Ok(res, teachers);
         } catch (error) {
             this.httpResponse.Error(res, error);
@@ -100,6 +100,16 @@ export class PersonController {
                 : this.httpResponse.Ok(res, subjects);
         } catch (error) {
             this.httpResponse.Error(res, error);
+        }
+    }
+
+    async uploadImg(req: Request, res: Response) {
+        try {
+            const {id} = req.params
+            await this.personService.uploadImage(id, req.files?.archivo)
+            this.httpResponse.Ok(res, `image upload successfully`)
+        } catch (error:any) {
+            this.httpResponse.NotFound(res, error.message);
         }
     }
 }
