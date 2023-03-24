@@ -4,7 +4,7 @@ import { PersonService } from '../../person/person/service/person.service';
 import { PersonEntity } from '../../person/person/entity/person.entity';
 interface JwtPayload {
     uuid: string;
-  }
+}
 
 export class TokenService {
 
@@ -20,7 +20,7 @@ export class TokenService {
         return this.jwtInstance.sign(payload, secret);
     }
 
-    public async generateJwt(mail: string): Promise<{ accessToken: string, email:string, role:string }> {
+    public async generateJwt(mail: string): Promise<{ accessToken: string, email: string, role: string }> {
         const consultPerson = await this.personService.findOneBy(
             mail
         );
