@@ -3,6 +3,7 @@ import { GroupEntity } from '../entity/group.entity';
 import { GroupDTO } from '../dto/group.dto';
 import { UpdateGroupDTO } from '../dto/update.dto';
 import { SubjectService } from '../../subject/service/subject.service';
+// import { v2 as cloudinary } from 'cloudinary'
 
 export class GroupService extends BaseService<GroupEntity>{
 
@@ -26,7 +27,7 @@ export class GroupService extends BaseService<GroupEntity>{
                 .createQueryBuilder("group")
                 .leftJoin("group.subject", "subject")
                 .where("group.id = :id", { id })
-                .select(["group.id", "group.name", "subject.name", "subject.code"])
+                .select(["group", "subject.name", "subject.code"])
                 .getOne()
         } catch (error: any) {
             throw new Error(error)
