@@ -42,6 +42,12 @@ export class ProjectEntity extends BaseEntity {
     number_of_students!: number
 
     @Column({
+        type:"int",
+        default:0
+    })
+    registeredPersons!:number
+
+    @Column({
         type: "boolean",
         default: false
     })

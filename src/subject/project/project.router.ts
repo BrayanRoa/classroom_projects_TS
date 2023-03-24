@@ -19,5 +19,9 @@ export class ProjectRouter extends BaseRouter<ProjectController, ProjectMiddlewa
             (req, res, next) => [this.middleware.uuidValidator(req, res, next)],
             (req, res) => this.controller.findOneBy(req, res)
         )
+
+        this.router.post('/projects/excel/:id',
+            (req, res) => this.controller.uploadExcelProjects(req, res)
+        )
     }
 }
