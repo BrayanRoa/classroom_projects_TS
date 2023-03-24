@@ -13,7 +13,7 @@ export class ProjectPersonEntity extends BaseEntity{
 
     @ManyToOne(() => ProjectEntity, (project) => project.persons)
     @JoinColumn({name:"project_id"})
-    project!:PersonEntity
+    project!:ProjectEntity
 
     @Column({
         type:"boolean"
