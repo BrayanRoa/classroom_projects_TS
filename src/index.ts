@@ -16,6 +16,7 @@ import { ProjectRouter } from './subject/project/project.router';
 import { AuthRouter } from './auth/auth.service';
 import { v2 as cloudinary } from 'cloudinary'
 import { ProjectPersonRouter } from './subject/project_person/project_person.router';
+import { TaskProjectRouter } from './subject/task_project/task_project.router';
 
 class Server extends ConfigServer {
     private readonly app: Application
@@ -61,7 +62,8 @@ class Server extends ConfigServer {
             new TaskRouter().router,
             new ProjectRouter().router,
             new AuthRouter().router,
-            new ProjectPersonRouter().router
+            new ProjectPersonRouter().router,
+            new TaskProjectRouter().router
         ]
     }
 

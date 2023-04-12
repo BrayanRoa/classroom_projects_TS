@@ -11,8 +11,8 @@ export class TaskRouter extends BaseRouter<TaskController, TaskMiddleware>{
     routes(): void {
 
         //* ✅
-        this.router.get('/tasks',
-            (req, res) => this.controller.findAll(req, res)
+        this.router.get('/tasks/:group_id',
+            (req, res) => this.controller.findAllOfGroup(req, res)
         )
 
         //* ✅
@@ -29,17 +29,29 @@ export class TaskRouter extends BaseRouter<TaskController, TaskMiddleware>{
         )
 
         //* ✅
-        this.router.patch(
-            "/task/change_state/:id/:state",
-            (req, res, next) => this.middleware.statusValidator(req, res, next),
-            (req, res) => this.controller.changeStateTask(req, res)
-        )
+        // this.router.patch(
+        //     "/task/change_state/:id/:state",
+        //     (req, res, next) => this.middleware.statusValidator(req, res, next),
+        //     (req, res) => this.controller.changeStateTask(req, res)
+        // )
 
         //* ✅
         this.router.patch(
             '/task/update/:id',
             (req, res, next) => [this.middleware.uuidValidator(req, res, next)],
             (req, res) => this.controller.update(req, res)
+        )
+
+        /*
+         * returns the number of tasks that are active in a group
+         */
+        this.router.get('/task/active/:id',
+            (req, res) => this.controller.countTasks(req, res)
+        )
+
+        // TODO: 👀 ESTE VEO QUE YA ESTA BIEN
+        this.router.get('/task/:group/:project',
+            (req, res) => this.controller.findAllTaskOfProject(req, res)
         )
     }
 }

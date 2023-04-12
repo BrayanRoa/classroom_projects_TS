@@ -1,6 +1,7 @@
-import { Column, JoinColumn, ManyToOne, Entity } from 'typeorm';
+import { Column, JoinColumn, ManyToOne, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../config/base.entity';
 import { GroupEntity } from '../../group/entity/group.entity';
+import { TaskProjectEntity } from '../../task_project/entity/task_project.entity';
 
 @Entity({name:"taks"})
 export class TaskEntity extends BaseEntity {
@@ -8,7 +9,6 @@ export class TaskEntity extends BaseEntity {
     @Column({
         type: "varchar",
         length: 30,
-        unique: true,
         nullable: false
     })
     name!: string
@@ -26,13 +26,16 @@ export class TaskEntity extends BaseEntity {
     })
     expired_date!: Date
 
-    @Column({
-        type: "boolean",
-        default: true
-    })
-    active!: boolean
+    // @Column({
+    //     type: "boolean",
+    //     default: true
+    // })
+    // active!: boolean
 
     @ManyToOne(()=> GroupEntity, (group)=> group.task)
     @JoinColumn({name:"group_id"})
     group!:GroupEntity
+
+    @OneToMany(()=> TaskProjectEntity, (task_project) => task_project.task)
+    project!:TaskProjectEntity[]
 }

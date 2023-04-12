@@ -38,9 +38,23 @@ export class ProjectController {
             const { id } = req.params
             const fileName = await this.utilService.validateFileExcel(req.files) as string
             const resp = await this.projectService.uploadExcelProjects(id, fileName);
-            this.httpResponse.Ok(res, resp)
+            (resp.length === 0)
+                ?this.httpResponse.Created(res, `Projects registered succesfully`)
+                :this.httpResponse.BadRequest(res, `Algunos proyectos ya estan registados con ese nombre: ${resp}`)
         } catch (error) {
             console.log(error);
+            this.httpResponse.Error(res, error);
+        }
+    }
+
+    async changeState(req: Request, res: Response) {
+        try {
+            const {id, state} = req.body
+            const update = await this.projectService.changeState(id, state);
+            (update.affected === 0)
+                ? this.httpResponse.NotFound(res, `project not found`)
+                : this.httpResponse.Ok(res, `project successfully approved`);
+        } catch (error) {
             this.httpResponse.Error(res, error);
         }
     }

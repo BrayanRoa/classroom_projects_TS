@@ -55,17 +55,17 @@ export class GroupController {
         }
     }
 
-    async seeGroupTasks(req: Request, res: Response) {
-        try {
-            const { id } = req.params
-            const tasks = await this.groupService.seeGroupTasks(id);
-            (!tasks)
-                ? this.httpResponse.NotFound(res, `Group with id ${id} not found`)
-                : this.httpResponse.Ok(res, tasks)
-        } catch (error) {
-            this.httpResponse.Error(res, error);
-        }
-    }
+    // async seeGroupTasks(req: Request, res: Response) {
+    //     try {
+    //         const { id } = req.params
+    //         const tasks = await this.groupService.seeGroupTasks(id);
+    //         (!tasks)
+    //             ? this.httpResponse.NotFound(res, `Group with id ${id} not found`)
+    //             : this.httpResponse.Ok(res, tasks)
+    //     } catch (error) {
+    //         this.httpResponse.Error(res, error);
+    //     }
+    // }
 
     async seeGroupProjects(req: Request, res: Response) {
         try {

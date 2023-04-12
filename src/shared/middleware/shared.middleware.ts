@@ -3,6 +3,7 @@ import { validate as uuidValid } from "uuid"
 import { Files } from "../interface/upload-file.interface";
 import { HttpResponse } from '../response/http-response';
 import { TokenService } from '../service/token.service';
+import * as path from 'path';
 
 export class SharedMiddleware {
 
@@ -45,17 +46,19 @@ export class SharedMiddleware {
         }
     }
 
-    existFile(req:Request, res:Response, next:NextFunction){
-        const validExtensions = ['png','jpeg','jpg']
-        
+    existFile(req: Request, res: Response, next: NextFunction, validExtensions = ['png', 'jpeg', 'jpg']) {
+        // const validExtensions = ['png', 'jpeg', 'jpg']
         if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
             return this.httpResponse.BadRequest(res, `There are no files in the request`)
         }
-    
-        const {mimetype} = (req.files?.archivo) as unknown as Files
-        const extension = mimetype.split('/')
-    
-        if(!validExtensions.includes(extension[1])){
+
+        // const { mimetype } = (req.files?.archivo) as unknown as Files
+        // const extension = mimetype.split('/')
+
+        const { name } = (req.files?.archivo) as unknown as Files
+        const extension = path.extname(name).substring(1)
+        console.log(extension);
+        if (!validExtensions.includes(extension)) {
             return this.httpResponse.BadRequest(res, `Invalid file extension - allowed ${validExtensions}`)
         }
         next()

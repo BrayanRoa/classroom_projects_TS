@@ -23,5 +23,11 @@ export class ProjectRouter extends BaseRouter<ProjectController, ProjectMiddlewa
         this.router.post('/projects/excel/:id',
             (req, res) => this.controller.uploadExcelProjects(req, res)
         )
+
+        this.router.patch('/project/change_state',
+            (req, res) => this.controller.changeState(req, res)
+        )
+
+        
     }
 }

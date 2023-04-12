@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { TaskService } from '../service/task.service';
 import { HttpResponse } from '../../../shared/response/http-response';
-import { UpdateResult } from 'typeorm';
+// import { UpdateResult } from 'typeorm';
 
 export class TaskController {
 
@@ -10,9 +10,10 @@ export class TaskController {
         private readonly httpResponse: HttpResponse = new HttpResponse()
     ) { }
 
-    async findAll(_req: Request, res: Response) {
+    async findAllOfGroup(req: Request, res: Response) {
         try {
-            const tasks = await this.taskService.findAll();
+            const {group_id} = req.params
+            const tasks = await this.taskService.findAllOfGroup(group_id);
             (!tasks)
                 ? this.httpResponse.NotFound(res, `no registered tasks yet`)
                 : this.httpResponse.Ok(res, tasks);
@@ -54,13 +55,35 @@ export class TaskController {
         }
     }
 
-    async changeStateTask(req: Request, res: Response) {
+    // async changeStateTask(req: Request, res: Response) {
+    //     try {
+    //         const { id, state } = req.params
+    //         const task: UpdateResult = await this.taskService.changeStateTask(id, state);
+    //         (task.affected === 0)
+    //             ? this.httpResponse.NotFound(res, `task with id ${id} not found`)
+    //             : this.httpResponse.Ok(res, `task update successfully`);
+    //     } catch (error) {
+    //         this.httpResponse.Error(res, error);
+    //     }
+    // }
+
+    async countTasks(req: Request, res: Response) {
         try {
-            const { id, state } = req.params
-            const task: UpdateResult = await this.taskService.changeStateTask(id, state);
-            (task.affected === 0)
-                ? this.httpResponse.NotFound(res, `task with id ${id} not found`)
-                : this.httpResponse.Ok(res, `task update successfully`);
+            const { id } = req.params
+            const count = await this.taskService.countTasks(id);
+            this.httpResponse.Ok(res, count);
+        } catch (error) {
+            this.httpResponse.Error(res, error);
+        }
+    }
+
+    async findAllTaskOfProject(req: Request, res: Response) {
+        try {
+            const { group, project } = req.params
+            const taskOfProject = await this.taskService.findAllTaskOfProject(group, project);
+            (taskOfProject.length === 0)
+                ? this.httpResponse.NotFound(res, `no tasks registered yet`)
+                : this.httpResponse.Ok(res, taskOfProject);
         } catch (error) {
             this.httpResponse.Error(res, error);
         }

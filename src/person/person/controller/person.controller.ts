@@ -8,7 +8,7 @@ export class PersonController {
 
     constructor(
         private readonly personService: PersonService = new PersonService(),
-        private readonly httpResponse: HttpResponse = new HttpResponse()
+        private readonly httpResponse: HttpResponse = new HttpResponse(),
     ) { }
 
     async findAll(_req: Request, res: Response) {
@@ -110,6 +110,18 @@ export class PersonController {
             this.httpResponse.Ok(res, `image upload successfully`)
         } catch (error:any) {
             this.httpResponse.NotFound(res, error.message);
+        }
+    }
+
+    async viewMyProjects(req: Request, res: Response) {
+        try {
+            const {mail} = req.params
+            const projects = await this.personService.viewMyProjects(mail);
+            (!projects)
+                ? this.httpResponse.NotFound(res, `Person without project`)
+                : this.httpResponse.Ok(res, projects);
+        } catch (error) {
+            this.httpResponse.Error(res, error);
         }
     }
 }

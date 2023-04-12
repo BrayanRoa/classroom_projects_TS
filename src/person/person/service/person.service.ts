@@ -15,7 +15,7 @@ export class PersonService extends BaseService<PersonEntity>{
     constructor(
         private readonly roleService: RoleService = new RoleService(),
         private readonly documentService: DocumentTypeService = new DocumentTypeService(),
-    ) {
+        ) {
         super(PersonEntity)
     }
 
@@ -160,10 +160,10 @@ export class PersonService extends BaseService<PersonEntity>{
     }
 
 
-    async uploadImage(id: string, image:any) {
+    async uploadImage(id: string, image: any) {
         try {
             const person = await this.findOneById(id)
-            if(!person) throw new Error(`person not found`)
+            if (!person) throw new Error(`person not found`)
             if (person?.img) {
                 const nombreArray = person.img.split('/')
                 const nombre = nombreArray.pop()
@@ -177,7 +177,23 @@ export class PersonService extends BaseService<PersonEntity>{
             })
 
             const { secure_url } = subida
-            return (await this.execRepository).update(id, {img:secure_url})
+            return (await this.execRepository).update(id, { img: secure_url })
+        } catch (error: any) {
+            throw new Error(error)
+        }
+    }
+
+    async viewMyProjects(mail: string): Promise<PersonEntity | null> {
+        try {
+            return (await this.execRepository)
+                .createQueryBuilder("person")
+                .leftJoin("person.projects", "person_project")
+                .leftJoin("person_project.project", "project")
+                .leftJoin("project.group", "group")
+                .leftJoin("group.subject", "subject")
+                .where("person.institutional_mail = :mail", { mail })
+                .select(["person.id", "person_project.id", "project","group.name", "subject.name"])
+                .getOne()
         } catch (error: any) {
             throw new Error(error)
         }

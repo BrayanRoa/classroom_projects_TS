@@ -6,6 +6,7 @@ import { UpdateProjectDTO } from '../dto/update_project.dto';
 import readXlsxFile from "read-excel-file/node";
 import path from "path"
 import fs from "fs"
+import { UpdateResult } from 'typeorm';
 export class ProjectService extends BaseService<ProjectEntity>{
 
     constructor(
@@ -57,6 +58,7 @@ export class ProjectService extends BaseService<ProjectEntity>{
 
     async uploadExcelProjects(group_id: string, fileName: string) {
         try {
+            const projects:string[]=[]
             const pathArchivo = path.join(__dirname, `../../../uploads/${fileName}`);
             await readXlsxFile(pathArchivo).then(async (rows) => {
                 rows.shift()
@@ -67,9 +69,11 @@ export class ProjectService extends BaseService<ProjectEntity>{
                         newProject.name = project[0].toString()
                         newProject.description = project[1].toString()
                         newProject.number_of_students = +project[2]
-                        newProject.state = project[3].toString()
+                        newProject.state = "in progress"
                         newProject.group = group_id
                         await this.create(newProject)
+                    }else{
+                        projects.push(`${project[0].toString()}`)
                     }
                 }
             }).catch((error) => {
@@ -78,8 +82,18 @@ export class ProjectService extends BaseService<ProjectEntity>{
             if (fs.existsSync(pathArchivo)) {
                 fs.unlinkSync(pathArchivo);
             }
+            return projects
         } catch (error: any) {
             throw new Error(error.message)
         }
     }
+
+    async changeState(id:string, state:string): Promise<UpdateResult> {
+        try {
+            return (await this.execRepository).update(id, {state})
+        } catch (error:any) {
+            throw new Error(error)
+        }
+    }
+
 }

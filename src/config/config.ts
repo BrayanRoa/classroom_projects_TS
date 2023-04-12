@@ -5,12 +5,13 @@ import { PersonEntity } from '../person/person/entity/person.entity';
 import { DocumentTypeEntity } from '../person/document_type/entity/document_type.entity';
 import { RoleEntity } from '../person/role/entity/role.entity';
 import { SubjectEntity } from '../subject/subject/entity/subject.entity';
-import { AdvanceEntity } from '../subject/advance/entity/advance.entity';
+// import { AdvanceEntity } from '../subject/advance/entity/advance.entity';
 import { GroupEntity } from '../subject/group/entity/group.entity';
 import { GroupPersonEntity } from '../subject/group_person/entity/group_person.entity';
 import { ProjectEntity } from '../subject/project/entity/project.entity';
 import { ProjectPersonEntity } from '../subject/project_person/entity/project_person.entity';
 import { TaskEntity } from '../subject/task/entity/task.entity';
+import { TaskProjectEntity } from "../subject/task_project/entity/task_project.entity";
 
 
 export abstract class ConfigServer {
@@ -56,12 +57,14 @@ export abstract class ConfigServer {
                 DocumentTypeEntity, 
                 RoleEntity, 
                 SubjectEntity, 
-                AdvanceEntity, 
+                // AdvanceEntity, 
                 GroupEntity, 
                 GroupPersonEntity, 
                 ProjectEntity, 
                 ProjectPersonEntity, 
-                TaskEntity],
+                TaskEntity,
+                TaskProjectEntity
+            ],
             // entities: [__dirname + "/../**/*.entity{.ts,.js}"],
             synchronize: true,
         }

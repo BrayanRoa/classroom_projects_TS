@@ -1,8 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../../config/base.entity';
 import { GroupEntity } from '../../group/entity/group.entity';
-import { AdvanceEntity } from '../../advance/entity/advance.entity';
+// import { AdvanceEntity } from '../../advance/entity/advance.entity';
 import { ProjectPersonEntity } from '../../project_person/entity/project_person.entity';
+import { TaskProjectEntity } from '../../task_project/entity/task_project.entity';
 
 @Entity({ name: "projects" })
 export class ProjectEntity extends BaseEntity {
@@ -10,7 +11,6 @@ export class ProjectEntity extends BaseEntity {
     @Column({
         type: "varchar",
         length: 30,
-        unique: true,
         nullable: false
     })
     name!: string
@@ -57,9 +57,12 @@ export class ProjectEntity extends BaseEntity {
     @JoinColumn({ name: "group_id" })
     group!: GroupEntity
 
-    @OneToMany(() => AdvanceEntity, (advance) => advance.project)
-    advance!: AdvanceEntity[]
+    // @OneToMany(() => AdvanceEntity, (advance) => advance.project)
+    // advance!: AdvanceEntity[]
 
     @OneToMany(() => ProjectPersonEntity, (project_person) => project_person.person )
     persons!:ProjectPersonEntity[]
+
+    @OneToMany(()=> TaskProjectEntity, (task_project) => task_project.project)
+    task!:TaskProjectEntity[]
 }

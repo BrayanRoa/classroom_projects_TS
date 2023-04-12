@@ -10,44 +10,57 @@ export class ProjectPersonService extends BaseService<ProjectPersonEntity>{
 
 
     constructor(
-        private readonly projectService:ProjectService = new ProjectService(),
+        private readonly projectService: ProjectService = new ProjectService(),
         private readonly personService: PersonService = new PersonService(),
-    ){
+    ) {
         super(ProjectPersonEntity)
     }
 
-    async registerPersonInProject(body:ProjectPersonDTO) {
+    async registerPersonInProject(body: ProjectPersonDTO) {
         try {
             const exist = await this.existPersonInProject(body.person_id, body.project_id)
-            if(exist){
+            if (exist) {
                 throw new Error(`Person already exist in project`)
-            }else{
+            } else {
                 const project = await this.projectService.findOneById(body.project_id)
                 const person = await this.personService.findOneById(body.person_id)
-                if(project && person && project.registeredPersons < project.number_of_students){
+                if (project && person && project.registeredPersons < project.number_of_students) {
                     let projectUpdate = new UpdateProjectDTO()
                     projectUpdate.registeredPersons = ++project.registeredPersons
                     await this.projectService.update(body.project_id, projectUpdate)
                     const newPersonInProject = (await this.execRepository).create(body)
                     newPersonInProject.project = project
-                    newPersonInProject.person = person!                
+                    newPersonInProject.person = person!
                     return (await this.execRepository).save(newPersonInProject)
-                }else{
+                } else {
                     throw new Error(`Project full`)
                 }
             }
-        } catch (error:any) {
+        } catch (error: any) {
             throw new Error(error)
         }
     }
 
-    private async existPersonInProject(person:string, project:string):Promise<ProjectPersonEntity | null>{
+    private async existPersonInProject(person: string, project: string): Promise<ProjectPersonEntity | null> {
         try {
             return (await this.execRepository)
                 .createQueryBuilder("project")
-                .where("project.person = :person AND project.project = :project", {person, project})
+                .where("project.person = :person AND project.project = :project", { person, project })
                 .getOne()
-        } catch (error:any) {
+        } catch (error: any) {
+            throw new Error(error)
+        }
+    }
+
+
+    async findPersonsWithProject(id: string) {
+        try {
+            return (await this.execRepository)
+                .createQueryBuilder("project_person")
+                .leftJoinAndSelect("project_person.person", "person")
+                .where("project_person.project = :id",{id})
+                .getMany()
+        } catch (error: any) {
             throw new Error(error)
         }
     }

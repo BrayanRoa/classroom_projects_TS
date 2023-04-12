@@ -65,18 +65,18 @@ export class GroupService extends BaseService<GroupEntity>{
         }
     }
 
-    async seeGroupTasks(id: string): Promise<GroupEntity | null> {
-        try {
-            return (await this.execRepository)
-                .createQueryBuilder("group")
-                .leftJoin("group.task", "task")
-                .where("group.id =:id", { id })
-                .select(["group.name", "group.active", "task"])
-                .getOne()
-        } catch (error: any) {
-            throw error.message
-        }
-    }
+    // async seeGroupTasks(id: string): Promise<GroupEntity | null> {
+    //     try {
+    //         return (await this.execRepository)
+    //             .createQueryBuilder("group")
+    //             .leftJoin("group.task", "task")
+    //             .where("group.id =:id", { id })
+    //             .select(["group.name", "group.active", "task"])
+    //             .getOne()
+    //     } catch (error: any) {
+    //         throw error.message
+    //     }
+    // }
 
     async seeGroupProjects(id: string): Promise<GroupEntity | null> {
         try {
