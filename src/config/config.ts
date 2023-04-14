@@ -66,7 +66,7 @@ export abstract class ConfigServer {
                 TaskProjectEntity
             ],
             // entities: [__dirname + "/../**/*.entity{.ts,.js}"],
-            synchronize: true,
+            synchronize: false,
         }
     }
 

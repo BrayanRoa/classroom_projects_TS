@@ -26,12 +26,6 @@ export class TaskEntity extends BaseEntity {
     })
     expired_date!: Date
 
-    // @Column({
-    //     type: "boolean",
-    //     default: true
-    // })
-    // active!: boolean
-
     @ManyToOne(()=> GroupEntity, (group)=> group.task)
     @JoinColumn({name:"group_id"})
     group!:GroupEntity

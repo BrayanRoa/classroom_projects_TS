@@ -57,9 +57,6 @@ export class ProjectEntity extends BaseEntity {
     @JoinColumn({ name: "group_id" })
     group!: GroupEntity
 
-    // @OneToMany(() => AdvanceEntity, (advance) => advance.project)
-    // advance!: AdvanceEntity[]
-
     @OneToMany(() => ProjectPersonEntity, (project_person) => project_person.person )
     persons!:ProjectPersonEntity[]
 

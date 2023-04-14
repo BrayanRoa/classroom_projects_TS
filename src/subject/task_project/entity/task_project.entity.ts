@@ -6,13 +6,6 @@ import { BaseEntity } from "../../../config/base.entity";
 @Entity({ name: "task_project" })
 export class TaskProjectEntity extends BaseEntity {
 
-    // TODO: BORRAR ESTE CAMPO
-    // @Column({
-    //     type: "date",
-    //     nullable: false
-    // })
-    // expired_date!: Date
-
     @Column({
         type: "varchar",
         nullable: false,
