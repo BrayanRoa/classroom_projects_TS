@@ -64,7 +64,12 @@ export class PersonService extends BaseService<PersonEntity>{
 
     async findOneById(id: string): Promise<PersonEntity | null> {
         try {
-            return (await this.execRepository).findOneBy({ id })
+            // return (await this.execRepository).findOneBy({ id })
+            return (await this.execRepository)
+                .createQueryBuilder("person")
+                .leftJoinAndSelect("person.role", "role")
+                .where("person.id = :id", {id})
+                .getOne()
         } catch (error: any) {
             throw new Error(error.message);
         }

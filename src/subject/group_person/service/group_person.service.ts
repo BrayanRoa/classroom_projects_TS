@@ -30,6 +30,10 @@ export class GroupPersonService extends BaseService<GroupPersonEntity>{
             const person = await this.personService.findOneById(body.person)
             const group = await this.groupService.findOneBy(body.group)
             if (person && group) {
+                console.log(person.role.name);
+                if (person.role.name === "docente"){
+                    await this.existTeacherInGroup(group.id)
+                }
                 await this.existPersonInGroup(person.id, group.id)
                 const group_person = (await this.execRepository).create(body)
                 group_person.person = person
@@ -66,6 +70,21 @@ export class GroupPersonService extends BaseService<GroupPersonEntity>{
                 .getOne();
             if(await exist){
                 throw new Error(`Person already exist in group`)
+            }
+        } catch (error:any) {
+            throw error
+        }
+    }
+
+    async existTeacherInGroup(group_id: string) {
+        try {
+            const exist = (await this.execRepository)
+                .createQueryBuilder("group_person")
+                .where(`
+                    group_person.group_id = :group_id AND group_person.active = :active`, { group_id, active:true })
+                .getOne();
+            if(await exist){
+                throw new Error(`the group already has a teacher`)
             }
         } catch (error:any) {
             throw error

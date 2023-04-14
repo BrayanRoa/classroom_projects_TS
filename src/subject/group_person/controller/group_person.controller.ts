@@ -13,6 +13,7 @@ export class GroupPersonControlle {
 
     async registerPerson(req: Request, res: Response) {
         try {
+            console.log("hola");
             await this.groupPersonService.registerPerson(req.body);
             this.httpResponse.Created(res, `successfully registered person`)
         } catch (error) {
