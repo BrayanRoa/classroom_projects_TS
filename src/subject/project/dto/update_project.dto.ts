@@ -28,7 +28,7 @@ export class UpdateProjectDTO extends BaseEntity{
 
     @IsNotEmpty()
     @IsNumber() 
-    registeredPersons?:number
+    registered_persons?:number
 
     @IsUUID()
     @IsNotEmpty()

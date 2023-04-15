@@ -45,7 +45,7 @@ export class ProjectEntity extends BaseEntity {
         type:"int",
         default:0
     })
-    registeredPersons!:number
+    registered_persons!:number
 
     @Column({
         type: "boolean",

@@ -24,9 +24,9 @@ export class ProjectPersonService extends BaseService<ProjectPersonEntity>{
             } else {
                 const project = await this.projectService.findOneById(body.project_id)
                 const person = await this.personService.findOneById(body.person_id)
-                if (project && person && project.registeredPersons < project.number_of_students) {
+                if (project && person && project.registered_persons < project.number_of_students) {
                     let projectUpdate = new UpdateProjectDTO()
-                    projectUpdate.registeredPersons = ++project.registeredPersons
+                    projectUpdate.registered_persons = ++project.registered_persons
                     await this.projectService.update(body.project_id, projectUpdate)
                     const newPersonInProject = (await this.execRepository).create(body)
                     newPersonInProject.project = project
