@@ -3,7 +3,7 @@ import { BaseEntity } from '../../../config/base.entity';
 import { GroupEntity } from '../../group/entity/group.entity';
 import { TaskProjectEntity } from '../../task_project/entity/task_project.entity';
 
-@Entity({name:"taks"})
+@Entity({name:"tasks"})
 export class TaskEntity extends BaseEntity {
 
     @Column({
