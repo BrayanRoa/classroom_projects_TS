@@ -51,7 +51,7 @@ export class TaskService extends BaseService<TaskEntity>{
                 newTask.group = group;
                 (await this.execRepository).save(newTask)
                 const projects = await this.groupService.seeGroupProjects(body.group)
-                for (const project of projects?.project!) {
+                for await (const project of projects?.project!) {
                     const bod = new TaskProjectDTO()
                     bod.state = "undelivered"
                     await this.taskProjectService.create(newTask, project, bod)

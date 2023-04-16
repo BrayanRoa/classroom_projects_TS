@@ -83,7 +83,7 @@ CREATE TABLE projects (
     active BOOLEAN NOT NULL DEFAULT TRUE,
     state VARCHAR(20) NOT NULL,
     number_of_students INTEGER NOT NULL,
-    registeredPersons INTEGER DEFAULT 0,
+    registered_persons INTEGER DEFAULT 0,
     full_flag BOOLEAN NOT NULL DEFAULT FALSE,
     group_id UUID NOT NULL,
     FOREIGN KEY (group_id) REFERENCES "group" (id)
