@@ -53,7 +53,6 @@ export class TaskService extends BaseService<TaskEntity>{
                 const projects = await this.groupService.seeGroupProjects(body.group)
                 for (const project of projects?.project!) {
                     const bod = new TaskProjectDTO()
-                    // bod.expired_date = body.expired_date
                     bod.state = "undelivered"
                     await this.taskProjectService.create(newTask, project, bod)
                 }
