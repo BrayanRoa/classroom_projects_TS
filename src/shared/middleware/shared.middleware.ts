@@ -51,7 +51,7 @@ export class SharedMiddleware {
         if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
             return this.httpResponse.BadRequest(res, `There are no files in the request`)
         }
-
+        
         // const { mimetype } = (req.files?.archivo) as unknown as Files
         // const extension = mimetype.split('/')
 
@@ -61,6 +61,7 @@ export class SharedMiddleware {
         if (!validExtensions.includes(extension)) {
             return this.httpResponse.BadRequest(res, `Invalid file extension - allowed ${validExtensions}`)
         }
+        console.log("pase");
         next()
     }
 }

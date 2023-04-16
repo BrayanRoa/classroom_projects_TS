@@ -15,7 +15,7 @@ export class TaskProjectRouter extends BaseRouter<TaskProjectController, TaskPro
 
         // TODO: VALIDAR QUE VENGA EL ARCHIVO
         this.router.patch('/task_project/add_delivery/:id',
-            (req, res, next) => this.middleware.existFile(req, res, next, ["zip","rar"]),
+            (req, res, next) => this.middleware.existFile(req, res, next, ['pdf']),
             (req, res) => this.controller.addDelivery(req, res)
         )
     }

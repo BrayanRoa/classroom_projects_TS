@@ -41,8 +41,9 @@ export class TaskProjectService extends BaseService<TaskProjectEntity>{
             return (await this.execRepository)
                 .createQueryBuilder("task_project")
                 .leftJoin("task_project.task", "task")
+                .leftJoin("task_project.project", "project")
                 .where("task_project.project_id = :project AND task_project.task_id = :task", { project, task })
-                .select(["task_project", "task"])
+                .select(["task_project", "task", "project"])
                 .getOne()
         } catch (error: any) {
             throw new Error(error)
@@ -55,7 +56,9 @@ export class TaskProjectService extends BaseService<TaskProjectEntity>{
             // TODO: VALIDAR SI YA SE HIZO UNA ENTREGA POR SU LA QUIERE SOBREESCRIBIR
             const task_project = await this.findOneBy(id)
             if (!task_project) throw new Error(`there are not task`)
-            if (task_project.link) {
+            console.log(task_project.link);
+            console.log(file);
+            if (task_project.link !== null) {
                 const nombreArray = task_project.link.split('/')
                 const nombre = nombreArray.pop()
                 const [public_id] = nombre!.split('.')
@@ -70,7 +73,7 @@ export class TaskProjectService extends BaseService<TaskProjectEntity>{
             const { secure_url } = subida
             return (await this.execRepository).update(id, { link: secure_url, state:"delivered" })
         } catch (error: any) {
-            throw new Error(error)
+            throw new Error(error.message)
         }
     }
 }
