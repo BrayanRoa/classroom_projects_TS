@@ -49,7 +49,7 @@ export class TaskService extends BaseService<TaskEntity>{
             if (group) {
                 const newTask = (await this.execRepository).create(body)
                 newTask.group = group;
-                (await this.execRepository).save(newTask)
+                await (await this.execRepository).save(newTask)
                 const projects = await this.groupService.seeGroupProjects(body.group)
                 for await (const project of projects?.project!) {
                     const bod = new TaskProjectDTO()
