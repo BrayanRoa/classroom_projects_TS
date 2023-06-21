@@ -28,7 +28,7 @@ class Server extends ConfigServer {
         this.PORT = this.getNumberEnv("PORT") || 3000
         this.middlewares()
         this.db()
-        this.app.use("/api/", this.routers())
+        this.app.use("/api/v1", this.routers())
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(this.swagger()));
         this.listen()
     }
